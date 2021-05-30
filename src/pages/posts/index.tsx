@@ -6,6 +6,7 @@ import { RichText } from "prismic-dom";
 
 import styles from "./styles.module.scss";
 import { getPrismicClient } from "../../services/prismic";
+import { useSession } from "next-auth/client";
 
 type Post = {
   slug: string;
@@ -19,6 +20,10 @@ interface PostsProps {
 }
 
 export default function Posts({ posts }: PostsProps) {
+  const [session] = useSession();
+
+  const activeSubscription = session?.activeSubscription;
+
   return (
     <>
       <Head>
@@ -28,7 +33,12 @@ export default function Posts({ posts }: PostsProps) {
       <main className={styles.container}>
         <div className={styles.posts}>
           {posts.map((post) => (
-            <Link href={`/posts/${post.slug}`} key={post.slug}>
+            <Link
+              href={`/posts/${activeSubscription ? "" : "preview/"}${
+                post.slug
+              }`}
+              key={post.slug}
+            >
               <a>
                 <time>{post.updatedAt}</time>
                 <strong>{post.title}</strong>

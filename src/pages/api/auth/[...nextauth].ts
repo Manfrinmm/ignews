@@ -37,9 +37,6 @@ export default NextAuth({
           ),
         );
 
-        // canceled
-        console.log(userActiveSubscription);
-
         return { ...session, activeSubscription: userActiveSubscription };
       } catch (error) {
         console.log(error);
